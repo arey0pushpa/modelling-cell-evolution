@@ -3,6 +3,9 @@ CBMC based modelling of cell evolution
 
 Modeling a Biology Cell evolution using CBMC . Kindly follow the Github Link :
 https://github.com/arey0pushpa/modelling-cell-evolution
+ 
+![](http://www.nature.com/nature/journal/v492/n7427/images/nature11759-f1.2.jpg)
+ 
  *
  *  Basic CBMC cell evolution code starting from an initial Given / Arbitary state and 
  *   evolving by making a transition  based on two Tables one update :  which add some material to the current compartmets  

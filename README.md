@@ -64,9 +64,9 @@ Starting from an initial Arbitary state and evolving (making progress from inita
 
 
 
- ======================================================
-            2.a  TABLE REPRESENTATION : 
- ======================================================
+=============================================================
+2. TABLE REPRESENTATION :
+================================================================
  
 *   Each table Will have a M * M dimention. M is total number of subsets the for given N. 
      If N = 2 i.e total 2 ^ 2 = 4 subsets.
@@ -74,9 +74,9 @@ Starting from an initial Arbitary state and evolving (making progress from inita
  *   Possible values at any place of 2-Dimentional table is either have 0 or 1. 
                0 means not possible to make a move. 1 Means move allowed.
 
-
- *   Rules for Update and Deletion Tables del[M}[M] , update[M][M]:
- *   
+-------------------------------------------------------------------------------------
+ Rules for Update and Deletion Tables del[M}[M] , update[M][M]:
+ 
      1. For Update Table : 
      
          Exactly One possiblity in a single row to make progress.

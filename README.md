@@ -143,7 +143,8 @@ update[2][2] = 1 : Means third row and third column has 1.
  
        b. delete Both molecule and hence cell becomes dead to {0}. 
  
-     In this case b will be taken as the choice. This decision is Temporary and will be changed to Non-deterministic in future versions.
+     In this case b will be taken as the choice. 
+     This decision is Temporary and will be changed to Non-deterministic in future versions.
  -----------------------------------------------------------------------------------
 
 ======================================================

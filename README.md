@@ -80,14 +80,16 @@ Starting from an initial Arbitary state and evolving (making progress from inita
      1. For Update Table : 
      
          Exactly One possiblity in a single row to make progress.
-      
-         Basic Example : Update caused a compartment {1} to add molecule 2 -> hence become compartment {1,2} in next state. 
+         Basic Example : Update caused a compartment {1} to add molecule 2 .
+                         Hence become compartment {1,2} in next state. 
        
-         Progress might be just staying there also. Like {1} -> {1} after an update state means compartmet remained the same.
+         Progress might be just staying there also.
+           Like {1} -> {1} after an update state means compartmet remained the same.
   
      2. For Deletion Table :
 
-        At least One Possiblity in a single row for the Deletion table. Allowing multiple possible deletes. 
+        At least One Possiblity in a single row for the Deletion table.
+        Allowing multiple possible deletes. 
         
         This might be used to model the situation based on non-deterministic choice.
 
@@ -99,13 +101,17 @@ Starting from an initial Arbitary state and evolving (making progress from inita
        {2}    0     0     1     0
        {1,2}  0     0     0     1
        
-  update[1][3] = 1 : Means second row and fouth column = 1 and hence a valid move.
+
+update[1][3] = 1 : Means second row and fouth column = 1 and hence a valid move.
   
-     As the rules are deterministic and there is only one choice if a compartment has this configuration {1} in next state                     molecule 2 will be added to this compartment and hence it'll become {1,2}. 
+     As the rules are deterministic and there is only one choice if a compartment has
+     this configuration {1} in next state molecule 2 will be added to this compartment 
+     and hence it'll become {1,2}. 
   
-  update[2][2] = 1 : Means third row and third column has 1.
+update[2][2] = 1 : Means third row and third column has 1.
      
-     Means in an update phase a molecule with configuration {2} will remains {2}. Nothing is going to be added. Stay on.
+     Means in an update phase a molecule with configuration {2} will remains {2}.
+     Nothing is going to be added. Stay on.
    
       One possible Delete Table :   
              {0}   {1}   {2}  {1,2}

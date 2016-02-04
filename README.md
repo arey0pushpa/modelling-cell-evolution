@@ -31,13 +31,13 @@ https://github.com/arey0pushpa/modelling-cell-evolution
  Lets Fix N = 2. Total number of molecules are two. And Lets represent them as number 1,2.
 
  Total number of possible combination = Power set of N  
+              
+              := 2 ^ 2  = 4 will be repesented as 
 
-             := 2 ^ 2  = 4 will be repesented as 
-
-              {0} : Represents Nothing is present. Comapartment is empty.     // Another representation assumption.
-              {1} : Represents A compartment with only one molecule 1 is present.
-              {2} : Represents A cmpartment with only one molecule 2 is present. 
-              {1,2} : Represents a compatment with both the molecules are presnet.
+         {0} : Represents Nothing is present. Comapartment is empty.     // Representation assumption.
+         {1} : Represents A compartment with only one molecule 1 is present.
+         {2} : Represents A cmpartment with only one molecule 2 is present. 
+         {1,2} : Represents a compatment with both the molecules are presnet.
 
 =============================================================
 2. TRANSITION :
@@ -48,13 +48,17 @@ Starting from an initial Arbitary state and evolving (making progress from inita
      1. Update Table :  Which  a# Add some material to the current compartments  
                         of the cell or b# Adding new compartment
 
-         a# Prev State -> {{1} , {2}}  Next State ->  {{1,2}, {2}}  added molecule {2} to first compartment.    
+         a# Prev State -> {{1} , {2}}  Next State ->  {{1,2}, {2}}  
+               Added molecule {2} to first compartment.    
 
-         b# Prev State -> {0} :dead:   Next State -> {1,2} : Cell with a compartment having two materials molecule 1 and 2.
+         b# Prev State -> {0} :dead:   Next State -> {1,2} :
+               Cell with a compartment having two materials molecule 1 and 2.
 
-     2. Deletion Table : Which removes the materials from the cell compartments or completely delete a compartment (equivalent                          to a empty compartment).
+     2. Deletion Table : Which removes the materials from the cell compartments or completely delete a compartment 
+                          (equivalent to a empty compartment).
 
- -------------  Another Subtle Point 
+ 
+ Another Subtle Point 
  
  Adding same molecule to the current compartment where already that molecule is present would have no change in configuration of the molecule. For example if we add molecule 1 to a compatment with configuration {1,2} its still be {1,2}. That means we are not taking care of count of #Same Molecules present. 
 

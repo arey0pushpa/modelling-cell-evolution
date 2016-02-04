@@ -54,7 +54,7 @@ Starting from an initial Arbitary state and evolving (making progress from inita
          b# Prev State -> {0} :dead:   Next State -> {1,2} :
                Cell with a compartment having two materials molecule 1 and 2.
 
-     2. Deletion Table : Which removes the materials from the cell compartments or completely delete a compartment 
+     2. Deletion Table : Which removes the materials from the cell compartments or completely delete a it.
                           (equivalent to a empty compartment).
 
  
@@ -63,8 +63,9 @@ Starting from an initial Arbitary state and evolving (making progress from inita
  Adding same molecule to the current compartment where already that molecule is present would have no change in configuration of the molecule. For example if we add molecule 1 to a compatment with configuration {1,2} its still be {1,2}. That means we are not taking care of count of #Same Molecules present. 
 
 
- =====================================================
-  2.a  TABLE REPRESENTATION : 
+
+ ======================================================
+            2.a  TABLE REPRESENTATION : 
  ======================================================
  
 *   Each table Will have a M * M dimention. M is total number of subsets the for given N. 
@@ -91,7 +92,7 @@ Starting from an initial Arbitary state and evolving (making progress from inita
         This might be used to model the situation based on non-deterministic choice.
 
 
-       One possible Update Table :   
+      One possible Update Table :   
              {0}   {1}   {2}  {1,2}
        {0}    0     1     0     0
        {1}    0     0     0     1

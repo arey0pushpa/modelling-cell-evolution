@@ -29,17 +29,33 @@ unsigned int nondet(){
 };
 
 // Go from one transition state to updated tarnsition state using this function
-bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector getRel , bitvector getAbs ){    
+bitvector transition(bitvector state, bitvector rel , bitvector abs ){    
     int ithofState , incState;  
-    for  (int i = 0; i < M; i++){
-         ithofState =  (state >> i) & 1;
-         if( ithofState == 1) {
-             incState = i - getRel[i];
-             state = state & 1 << i ;
-             state = state & 1 << incState ;
-         }
+    unsigned int  i , j;
+    bitvector newState = 0b0;
+    for ( i = 0 ; i < M; i++) {
+        // Checking for present and then going to new state update abs
+        if (state & (1 << i)) {
+           newState = (newState |  abs[i]) ;
+        }
+
+        if (i == (M - 1)){
+            if (state & ( 1 << i)) {
+                newState = (newState |  abs[i]) ;
+                }
+            if (newState & (1 >> M - 1)) {
+                newState = newState | rel[M - 1];
+                }
+            if (newState & (1 >> M - 2)) {
+                newState = newState | rel[M - 1];
+             }
+             if(newState & ( 1 >> M- 3)) {
+                newState = newState | rel[M - 1];
+             }
+        }
      }
-}
+     return newState;
+}       
 
 
 int  main() {
@@ -65,7 +81,6 @@ int  main() {
     C1 = 0;
     C2 = 1;
     
-
     // CONFUSION POINT HAS TO BE CLEARED ! 
     //  Allow only those places that have subset to be released
     /// Make absorb Absorb Correctly and Release to release correctly
@@ -118,8 +133,9 @@ int  main() {
         relCount += (rel[i][j] ? 1 : 0);
         absCount += (abs[i][j] ? 1 : 0);
        }
-       __CPROVER_assume(absCount <= 2 && absCount >=1);
-       __CPROVER_assume(relCount >= 1); 
+// Just to make model simple for today only  allowing only one update and delete config
+       __CPROVER_assume(absCount ==1);
+       __CPROVER_assume(relCount == 1); 
    }
  
  // state = 0b10111000;   //0111

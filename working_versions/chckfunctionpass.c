@@ -1,18 +1,7 @@
 #include <stdio.h>
 
-/* N : Total Number of different Molecules.
- *
- * M : Total number of different combinations of molecule. i.e Powerset of N.
- *
- * 1. We consider distinct combination as differnt compartment.
- *    
- * // A BIG Assumption : Subtle Point :    
- * 2. Doesn't care if two/more copies of the same compartment present.
- *    Will consider It as only One Copy. i.e we are not calculating the total number of Similar compartments present.
- *    We are taking account only total number of differnt compartments present.*/
 
 #define N 3   // Total Number of molecules
-// State is going to be represented by M 
 #define M 8   // Total Number of different combinations i.e  
 
 
@@ -29,36 +18,12 @@ unsigned int nondet(){
 };
 
 // Go from one transition state to updated tarnsition state using this function
-bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector getRel[] , bitvector getAbs[]){    
+bitvector transition(bitvector state, bitvector rel, bitvector abs , bitvector getRel[], bitvector getAbs[]) {    
     int ithofState , incState;  
     unsigned int  i , j;
-    bitvector newState = 0b0 , retState;
-    for ( i = 0 ; i < M; i++) {
-        // Checking for present and then going to new state update abs
-        // 0100 that means there is a compartment {1} present rather than starting from LSB
-        if ((state >> i) & 1) {     // MOsT IMPORTANT POINT State has been represented as reverse of view. 
-           newState = (newState | getAbs[i]) ;
-        }
+        printf( getAbs[2]);
+   return state;
 
-        if (i == (M - 1)){
-            if (state & ( 1 << i)) {
-                newState = (newState |  getAbs[i]) ;
-                }
-            if (newState & (1 >> M - 1)) {
-				newState = newState & ~(1 >> M-1); 
-                newState = newState | getRel[M - 1];
-                }
-            if (newState & (1 >> M - 2)) {
-				newState = newState & ~(1 >> M-2);
-                newState = newState | getRel[M - 2];
-             }
-             if(newState & ( 1 >> M- 3)) {
-				newState = newState & ~(1 >> M-3);
-                newState = newState | getRel[M - 3];
-             }
-        }
-     }
-     return newState;
 }       
 
 
@@ -71,8 +36,8 @@ int  main() {
     unsigned int i , j , k , counter;
     unsigned int relCount = 0, absCount = 0;
    // Each table Will have a M * M dimention. M is total number of subsets the for given N. If N = 2 i.e total 2 ^ 2 = 4 subsets.
-    bitvector rel[M][M], getRel[M];  // define release table M * M
-    bitvector abs[M][M], getAbs[M];  // define Absorb table M * M  
+    bitvector rel[M][M], getRel[8];  // define release table M * M
+    bitvector abs[M][M], getAbs[8];  // define Absorb table M * M  
 
    // Possible values at any place of 2-Dimentional table is either have 0 or 1. 
    // 0 means not possible to make a move. 1 Means move allowed.

@@ -29,7 +29,7 @@ unsigned int nondet(){
 };
 
 // Go from one transition state to updated tarnsition state using this function
-bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector getRel[] , bitvector getAbs[]){    
+bitvector transition(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
     int ithofState , incState;  
     unsigned int  i , j;
     bitvector newState = 0b0 , retState;
@@ -171,7 +171,7 @@ while(1){
         l2s_s = state ;           
     }	
      on_loop = (save || saved);			
-     next_state = transition(state , rel , abs , getRel , getAbs);
+     next_state = transition(state , getRel , getAbs);
   
      counter++;
    

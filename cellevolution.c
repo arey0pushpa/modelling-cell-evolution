@@ -37,7 +37,7 @@ bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector 
         // Checking for present and then going to new state update abs
         // 0100 that means there is a compartment {1} present rather than starting from LSB
         if ((state >> i) & 1) {     // MOsT IMPORTANT POINT State has been represented as reverse of view. 
-           newState = (newState |  getAbs[i]) ;
+           newState = (newState | getAbs[i]) ;
         }
 
         if (i == (M - 1)){
@@ -45,15 +45,15 @@ bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector 
                 newState = (newState |  getAbs[i]) ;
                 }
             if (newState & (1 >> M - 1)) {
-				newState = newState & (0 >> M-1);
+				newState = newState & ~(1 >> M-1); 
                 newState = newState | getRel[M - 1];
                 }
             if (newState & (1 >> M - 2)) {
-				newState = newState & (0 >> M-2);
+				newState = newState & ~(1 >> M-2);
                 newState = newState | getRel[M - 2];
              }
              if(newState & ( 1 >> M- 3)) {
-				newState = newState & (0 >> M-3);
+				newState = newState & ~(1 >> M-3);
                 newState = newState | getRel[M - 3];
              }
         }
@@ -149,10 +149,10 @@ int  main() {
       getAbs[i] = 0b0;
       for(j = 0;j < M; j++){
           if(rel[i][j] == 1){
-           getRel[i] =  getRel[i] | ( 1 << i);
+           getRel[i] =  (getRel[i] | ( 1 << i));
           }
           if(abs[i][j] == 1){
-            getAbs[i] = getAbs[i] | (1 << j) ;
+            getAbs[i] = (getAbs[i] | (1 << j)) ;
           }
       }
 

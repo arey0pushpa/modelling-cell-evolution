@@ -11,9 +11,9 @@
  *    Will consider It as only One Copy. i.e we are not calculating the total number of Similar compartments present.
  *    We are taking account only total number of differnt compartments present.*/
 
-#define N 2   // Total Number of molecules
+#define N 3   // Total Number of molecules
 // State is going to be represented by M 
-#define M 4   // Total Number of different combinations i.e  
+#define M 8   // Total Number of different combinations i.e  
 
 
 _Bool nondet_bool();
@@ -29,28 +29,32 @@ unsigned int nondet(){
 };
 
 // Go from one transition state to updated tarnsition state using this function
-bitvector transition(bitvector state, bitvector rel , bitvector abs ){    
+bitvector transition(bitvector state, bitvector rel , bitvector abs , bitvector getRel , bitvector getAbs){    
     int ithofState , incState;  
     unsigned int  i , j;
-    bitvector newState = 0b0;
+    bitvector newState = 0b0 , retState;
     for ( i = 0 ; i < M; i++) {
         // Checking for present and then going to new state update abs
-        if (state & (1 << i)) {
-           newState = (newState |  abs[i]) ;
+        // 0100 that means there is a compartment {1} present rather than starting from LSB
+        if ((state >> i) & 1) {     // MOsT IMPORTANT POINT State has been represented as reverse of view. 
+           newState = (newState |  getAbs[i]) ;
         }
 
         if (i == (M - 1)){
             if (state & ( 1 << i)) {
-                newState = (newState |  abs[i]) ;
+                newState = (newState |  getAbs[i]) ;
                 }
             if (newState & (1 >> M - 1)) {
-                newState = newState | rel[M - 1];
+				newState = newState & (0 >> M-1);
+                newState = newState | getRel[M - 1];
                 }
             if (newState & (1 >> M - 2)) {
-                newState = newState | rel[M - 1];
+				newState = newState & (0 >> M-2);
+                newState = newState | getRel[M - 2];
              }
              if(newState & ( 1 >> M- 3)) {
-                newState = newState | rel[M - 1];
+				newState = newState & (0 >> M-3);
+                newState = newState | getRel[M - 3];
              }
         }
      }
@@ -138,6 +142,21 @@ int  main() {
        __CPROVER_assume(relCount == 1); 
    }
  
+ 
+ // Create the bitvector versio of the 2d table we have 
+  for  (i = 0; i < M; i++){
+      getRel[i] = 0b0;
+      getAbs[i] = 0b0;
+      for(j = 0;j < M; j++){
+          if(rel[i][j] == 1){
+           getRel[i] =  getRel[i] | ( 1 << i);
+          }
+          if(abs[i][j] == 1){
+            getAbs[i] = getAbs[i] | (1 << j) ;
+          }
+      }
+
+  }
  // state = 0b10111000;   //0111
   saved = 0;
   looped = 0; 						 									

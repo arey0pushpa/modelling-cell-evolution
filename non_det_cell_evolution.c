@@ -24,7 +24,7 @@ typedef unsigned __CPROVER_bitvector[M] bitvector;  // define a bitvector of len
 
 unsigned int nondet(){  
     unsigned int num = nondet_uint();
-    __CPROVER_assume( num >= 0 && num  <= 1);
+    __CPROVER_assume( num>= 0 && num  <= 1);
     return num;
 };
 
@@ -114,9 +114,9 @@ int  main() {
    for (i = 0; i < M; i++) {
        for (j = 0; j < M; j++) {
           if (i <= j) {
-             abs[i][j] = 0;           // Make all Places to be 0 as u can't update and loose molecule. 
+             abs[i][j] = 0;
              if ( (s[i] & s[j]) == s[j]) {
-                rel[i][j] = nondet();  // Allow arbitary 1's at any possible positions
+                rel[i][j] = nondet();
              }
              else {
                rel[i][j] = 0;
@@ -136,11 +136,10 @@ int  main() {
 
         relCount += (rel[i][j] ? 1 : 0);
         absCount += (abs[i][j] ? 1 : 0);
-       assert(0);
        }
 // Just to make model simple for today only  allowing only one update and delete config
-       __CPROVER_assume(absCount == 1);
-       __CPROVER_assume(relCount == 1);
+       __CPROVER_assume(absCount ==1);
+       __CPROVER_assume(relCount == 1); 
    }
  
  
@@ -184,7 +183,7 @@ while(1){
      if (on_loop && !looped) savecnt = counter;  
      __CPROVER_assert( (!(on_loop) ||  (!looped || savecnt < 10)), "every stable state is reached within 10 iterations");
   }
-assert(0);
+
   return 0;
 }
 

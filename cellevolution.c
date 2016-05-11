@@ -112,8 +112,10 @@ int  main() {
  */
 
    for (i = 0; i < M; i++) {     // When there will be a quantifier support ??? Fu*k
+       relCount = 0;
+       absCount = 0;
        for (j = 0; j < M; j++) {
-          if (i <= j) {
+          if (i < j) {
              abs[i][j] = 0;           // Make all Places to be 0 as u can't update and loose molecule. 
              if ( (s[i] & s[j]) == s[j]) {
                 rel[i][j] = nondet();  // Allow arbitary 1's at any possible positions
@@ -123,6 +125,12 @@ int  main() {
              
              }  
           }
+
+          else if (i == j){
+              abs[i][j] = nondet();
+              rel[i][j] = nondet();
+          }
+
 
           else {
               rel[i][j] = 0;
@@ -140,7 +148,6 @@ int  main() {
         absCount = absCount + abs[i][j];
        }
 // Just to make model simple for today only  allowing only one update and delete config
-       assert(0);
        __CPROVER_assume(absCount == 1);
        __CPROVER_assume(relCount == 1);
    }
@@ -166,6 +173,7 @@ int  main() {
   looped = 0; 						 									
   unsigned int savecnt = 0;
    
+assert(0);
 while(1){	
 					   		 
     save = nondet_bool(); 			 
@@ -184,9 +192,9 @@ while(1){
      
      looped = (saved && (state == l2s_s));
      if (on_loop && !looped) savecnt = counter;  
+assert(0);
      __CPROVER_assert( (!(on_loop) ||  (!looped || savecnt < 10)), "every stable state is reached within 10 iterations");
   }
-assert(0);
   return 0;
 }
 

@@ -111,7 +111,7 @@ int  main() {
  
  */
 
-   for (i = 0; i < M; i++) {     // When there will be a quantifier support ??? Fu*k
+   for (i = 0; i < M; i++) {
        for (j = 0; j < M; j++) {
           if (i <= j) {
              abs[i][j] = 0;           // Make all Places to be 0 as u can't update and loose molecule. 
@@ -134,13 +134,11 @@ int  main() {
               }
           }   
 
-
-        relCount = relCount + rel[i][j];
-
-        absCount = absCount + abs[i][j];
+        relCount += (rel[i][j] ? 1 : 0);
+        absCount += (abs[i][j] ? 1 : 0);
+       assert(0);
        }
 // Just to make model simple for today only  allowing only one update and delete config
-       assert(0);
        __CPROVER_assume(absCount == 1);
        __CPROVER_assume(relCount == 1);
    }

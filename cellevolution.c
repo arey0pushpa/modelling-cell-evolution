@@ -14,13 +14,13 @@
 #define N 3   // Total Number of molecules
 // State is going to be represented by M 
 #define M 8   // Total Number of different combinations i.e  
-
+#define B 4  // Size of the bit vector it has to be N + 1
 
 _Bool nondet_bool();
 unsigned int nondet_uint();
 
 typedef int bool;
-typedef unsigned __CPROVER_bitvector[M] bitvector;  // define a bitvector of length N which will represent the comaprtment
+typedef unsigned __CPROVER_bitvector[B] bitvector;  // define a bitvector of length N which will represent the comaprtment
 
 unsigned int nondet(){  
     unsigned int num = nondet_uint();
@@ -35,27 +35,14 @@ bitvector transition(bitvector state, bitvector getRel[] , bitvector getAbs[]){
     bitvector newState = 0b0 , retState;
     for ( i = 0 ; i < M; i++) {
         // Checking for present and then going to new state update abs
-        // 0100 that means there is a compartment {1} present rather than starting from LSB
-        if ((state >> i) & 1) {     // MOsT IMPORTANT POINT State has been represented as reverse of view. 
+        if ((state) & (1 << i)) {     // MOsT IMPORTANT POINT State has been represented as stated below 1000 means {1,2} is present 
            newState = (newState | getAbs[i]) ;
         }
+    }
 
-        if (i == (M - 1)){
-            if (state & ( 1 << i)) {
-                newState = (newState |  getAbs[i]) ;
-                }
-            if (newState & (1 >> M - 1)) {
-				newState = newState & ~(1 >> M-1); 
-                newState = newState | getRel[M - 1];
-                }
-            if (newState & (1 >> M - 2)) {
-				newState = newState & ~(1 >> M-2);
-                newState = newState | getRel[M - 2];
-             }
-             if(newState & ( 1 >> M- 3)) {
-				newState = newState & ~(1 >> M-3);
-                newState = newState | getRel[M - 3];
-             }
+    for (i = M ; i <= 0; i--) {
+        if (state & (1 << (i - 1))) {
+                newState = (newState |  getRel[i]) ;
         }
      }
      return newState;
@@ -71,13 +58,12 @@ int  main() {
     unsigned int i , j , k , counter;
     unsigned int relCount = 0, absCount = 0;
    // Each table Will have a M * M dimention. M is total number of subsets the for given N. If N = 2 i.e total 2 ^ 2 = 4 subsets.
-    bitvector rel[M][M], getRel[M];  // define release table M * M
-    bitvector abs[M][M], getAbs[M];  // define Absorb table M * M  
+    _Bool rel[M][M] , abs[M][M];
+    bitvector getRel[M] , getAbs[M];  // define Absorb table M * M  
 
    // Possible values at any place of 2-Dimentional table is either have 0 or 1. 
    // 0 means not possible to make a move. 1 Means move allowed.
 
-    int* array1[M];
     
     bitvector s[M] = {0b0000 ,0b0001 , 0b0010 , 0b0100 , 0b0011, 0b0101 , 0b0110 , 0b1110};
    // bitvector n[M] = {0b0000 ,0b0001 , 0b0010 , 0b0100 , 0b0011, 0b0101 , 0b0110 , 0b1110};
@@ -126,7 +112,7 @@ int  main() {
              }  
           }
 
-          else if (i == j){
+          else if (i == j){         // Diagonal 1 means its stays to itself no change
               abs[i][j] = nondet();
               rel[i][j] = nondet();
           }
@@ -153,27 +139,27 @@ int  main() {
    }
  
  
- // Create the bitvector versio of the 2d table we have 
+ // Create the bitvector versio of the 2d table we have
+ // Bitvector representation will be in sync with the state representation 
   for  (i = 0; i < M; i++){
       getRel[i] = 0b0;
       getAbs[i] = 0b0;
       for(j = 0;j < M; j++){
           if(rel[i][j] == 1){
-           getRel[i] =  (getRel[i] | (1 << i));
+           getRel[i] =  (getRel[i] | (1 << i)); // building the bitvector reverse of the table.
           }
           if(abs[i][j] == 1){
-            getAbs[i] = (getAbs[i] | (1 << j)) ;
+            getAbs[i] = (getAbs[i] | (1 << j)) ; // building the bitvector revrese of the table i think in mind
           }
       }
 
   }
   
- // state = 0b10111000;   //0111
+ // state = 0b10111000;   //0111 state is going to be represented AS SAME 1010 means{1,2} , {1} are present . 
   saved = 0;
   looped = 0; 						 									
   unsigned int savecnt = 0;
    
-assert(0);
 while(1){	
 					   		 
     save = nondet_bool(); 			 
@@ -192,7 +178,7 @@ while(1){
      
      looped = (saved && (state == l2s_s));
      if (on_loop && !looped) savecnt = counter;  
-assert(0);
+     assert(0);
      __CPROVER_assert( (!(on_loop) ||  (!looped || savecnt < 10)), "every stable state is reached within 10 iterations");
   }
   return 0;

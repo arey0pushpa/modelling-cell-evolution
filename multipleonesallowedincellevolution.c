@@ -28,23 +28,36 @@ unsigned int nondet(){
     return num;
 };
 
+unsigned int zeroTon(unsigned int n) {
+        unsigned int result = nondet_uint();
+            __CPROVER_assume(result >=0 && result <=n);
+                return result ;
+};
+
+
 // Go from one transition state to updated tarnsition state using this function
 bitvector transition(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
     int ithofState , incState;  
-    unsigned int  i , j;
+    unsigned int  i , j , index;
     bitvector newState = 0b0 , retState;
+    bitvector bag[B] = {0b0001, 0b0010, 0b0100, 0b1000};
     for ( i = 0 ; i < M; i++) {
         // Checking for present and then going to new state update abs
         if ((state) & (1 << i)) {     // MOsT IMPORTANT POINT State has been represented as stated below 1000 means {1,2} is present 
-           newState = (newState | getAbs[i]) ;
+            index = zeroTon(B);
+            __CPROVER_assume((bag[index] & getAbs[i]) != 0); // Check whether this is working
+            newState = ( newState | getAbs[bag[index]] );
         }
     }
 
     for (i = M ; i <= 0; i--) {
         if (state & (1 << (i - 1))) {
-                newState = (newState |  getRel[i]) ;
+            index = zeroTon(B);
+            __CPROVER_assume((bag[index] & getAbs[i]) != 0); // check whether this is working
+            newState = ( newState |  getRel[bag[index]] ) ;
         }
      }
+
      return newState;
 }       
 

@@ -28,24 +28,52 @@ unsigned int nondet(){
     return num;
 };
 
-// Go from one transition state to updated tarnsition state using this function
-bitvector transition(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
-    int ithofState , incState;  
-    unsigned int  i , j;
-    bitvector newState = 0b0 , retState;
-    for ( i = 0 ; i < M; i++) {
+unsigned int zeroTon(unsigned int n) {
+        unsigned int result = nondet_uint();
+            __CPROVER_assume(result >=0 && result <=n);
+                return result ;
+};
+
+
+   bitvector updatefun(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
+       for ( i = 0 ; i < M; i++) {
         // Checking for present and then going to new state update abs
         if ((state) & (1 << i)) {     // MOsT IMPORTANT POINT State has been represented as stated below 1000 means {1,2} is present 
-           newState = (newState | getAbs[i]) ;
-        }
-    }
-
-    for (i = M ; i <= 0; i--) {
-        if (state & (1 << (i - 1))) {
-                newState = (newState |  getRel[i]) ;
+            index = zeroTon(B);
+            __CPROVER_assume((bag[index] & getAbs[i]) != 0); // Check whether this is working
+            newState = ( newState | getAbs[bag[index]] );
         }
      }
      return newState;
+   }
+    
+    bitvector deletefun(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
+      for (i = M ; i <= 0; i--) {
+        if (state & (1 << (i - 1))) {
+            index = zeroTon(B);
+            __CPROVER_assume((bag[index] & getAbs[i]) != 0); // check whether this is working
+            newState = ( newState |  getRel[bag[index]] ) ;
+        }
+     }
+     return newState;
+   }
+
+
+// Go from one transition state to updated tarnsition state using this function
+bitvector transition(bitvector state, bitvector getRel[] , bitvector getAbs[]){    
+    int ithofState , incState;  
+    unsigned int  i , j , index , rand;
+    bitvector newState = 0b0 , retState;
+    bitvector bag[B] = {0b0001, 0b0010, 0b0100, 0b1000};
+    rand = nondet();
+    if (rand == 1) {
+		newState = updatefun(sate,getRel,getAbs);
+	}
+	else {
+		newState = deletefun(sate,getRel,getAbs);
+	}	
+    
+    return newState;
 }       
 
 

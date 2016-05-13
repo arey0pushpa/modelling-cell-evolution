@@ -20,7 +20,7 @@ _Bool nondet_bool();
 unsigned int nondet_uint();
 
 typedef int bool;
-typedef unsigned __CPROVER_bitvector[B] bitvector;  // define a bitvector of length N which will represent the comaprtment
+typedef unsigned __CPROVER_bitvector[M] bitvector;  // define a bitvector of length N which will represent the comaprtment
 
 unsigned int nondet(){  
     unsigned int num = nondet_uint();
@@ -146,7 +146,7 @@ int  main() {
       getAbs[i] = 0b0;
       for(j = 0;j < M; j++){
           if(rel[i][j] == 1){
-           getRel[i] =  (getRel[i] | (1 << i)); // building the bitvector reverse of the table.
+           getRel[i] =  (getRel[i] | (1 << j)); // building the bitvector reverse of the table.
           }
           if(abs[i][j] == 1){
             getAbs[i] = (getAbs[i] | (1 << j)) ; // building the bitvector revrese of the table i think in mind
@@ -180,7 +180,7 @@ while(1){
      if (on_loop && !looped) savecnt = counter;  
 //     assert(0);
  printf("save count = %d" , savecnt); 
-     __CPROVER_assert( (!(on_loop) ||  (!looped || savecnt < 10)), "every stable state is reached within 10 iterations");
+     __CPROVER_assert( (!(on_loop) ||  (!looped || savecnt >  10)), "every stable state is reached within 10 iterations");
   }
   return 0;
 }
